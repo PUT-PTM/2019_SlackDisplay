@@ -11,3 +11,4 @@ CMakeLists_template.txt
 STM32F407VGTx_FLASH.ld
 syscalls.c
 .idea
+__pycache__
