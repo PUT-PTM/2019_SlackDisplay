@@ -5,54 +5,54 @@ import time
 import re
 import sys, json
 import serial
+from channelsList import ChannelsList
+from slacker import Slacker
 
-slack_token = 'xoxb-536663832229-571336411969-GejYp2GT38SV4REtQb8gk1HM'
-sc = SlackClient(slack_token)
+MSG_NUM = 16
 
-# send message on slack
-# sc.api_call(
-#   "chat.postMessage",
-#   channel="#general",
-#   text="Test Message"
+
+slack = Slacker('xoxb-536663832229-571336411969-SVeVMb8w95UgYercyeRS0cDO')
+
+
+channels_list = ChannelsList()
+slack.get_channels(channels_list)
+slack.get_messeges(channels_list)
+
+channels_list.print_all()
+
+channels_list.print_name('general')
+
+
+# TODO: spradzanie czy dana wiadomość już jest
+# TODO: protokół
+# ser = serial.Serial(
+#     port='COM7',
+#     baudrate=9600,
+#     parity=serial.PARITY_ODD,
+#     stopbits=serial.STOPBITS_ONE,
+#     bytesize=serial.EIGHTBITS
 # )
 
-MSG_NUM = 3
 
-# get message history from slack
-response = sc.api_call(
-    "channels.history",
-    channel="CFRR7FSTB",
-    count=MSG_NUM
-)
-
-# file = open("response.txt", "w")
-# file.write(str(response))
-# file.close
-
-#print(json.dumps(response, indent=4))
-
-ser = serial.Serial(
-    port='com7',
-    baudrate=9600,
-    parity=serial.PARITY_ODD,
-    stopbits=serial.STOPBITS_ONE,
-    bytesize=serial.EIGHTBITS
-)
+################################################################################
+print("\n\nSerial\n\n")
+ser = serial.Serial('COM7')
 
 ser.isOpen()
 
-for e in response["messages"]:
+for e in channels_list.get('general').msgs.messages:
+    #print(e.text)
     #time = datetime.datetime.fromtimestamp(float(e["ts"]))
-    data = e["text"]
+    data = e.text
     #print(f"{data}, {time}")
     print(f"{data}")
     ser.write(data.encode('ascii'))
 
 
-    time.sleep(1)
+    #time.sleep(1)
     out = ''
     # let's wait one second before reading output (let's give device time to answer)
-    time.sleep(1)
+    time.sleep(3)
     while ser.inWaiting() > 0:
         out += str(ser.read(1).decode('ascii'))
 
