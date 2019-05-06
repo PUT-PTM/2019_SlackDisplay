@@ -31,6 +31,10 @@ class ChannelsList:
 
         return None
 
+    def get_id(self, id):
+        return self.channels[id]
+
+
     def check(self, chan_id):
         """Checks if channel already exists"""
         pass

@@ -34,3 +34,14 @@ class Slacker:
             for data in history["messages"]:
                 e.msgs.add(data["text"], data["user"], data["ts"])
 
+            e.msgs.messages.reverse()
+
+            # tmp = MessegesList()
+            #
+            # for data in history["messages"]:
+            #     tmp.add(data["text"], data["user"], data["ts"])
+            #
+            # tmp.messages.reverse()
+            # tmp.print()
+            #
+            # e.msgs = tmp
