@@ -76,12 +76,11 @@
 
 /* USER CODE BEGIN PV */
 
-const int ARRAY_SIZE = 200;
-uint8_t DataToSend[ARRAY_SIZE]; // Tablica zawierajaca dane do wyslania
+uint8_t DataToSend[200]; // Tablica zawierajaca dane do wyslania
 uint8_t MessageCounter = 0; // Licznik wyslanych wiadomosci
 uint8_t MessageLength = 0; // Zawiera dlugosc wysylanej wiadomosci
 
-uint8_t ReceivedData[ARRAY_SIZE]; // Tablica przechowujaca odebrane dane
+uint8_t ReceivedData[200]; // Tablica przechowujaca odebrane dane
 uint8_t ReceivedDataFlag = 0; // Flaga informujaca o odebraniu danych
 /* USER CODE END PV */
 
@@ -89,6 +88,12 @@ uint8_t ReceivedDataFlag = 0; // Flaga informujaca o odebraniu danych
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+
+
+
+}
 
 /* USER CODE END PFP */
 
@@ -137,23 +142,151 @@ int main(void)
           HAL_Delay(100);
           if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET) {
               ++MessageCounter;
-              MessageLength = sprintf(DataToSend, "Wiadomosc nr %d\n\r", MessageCounter);
+              MessageLength = (uint8_t) sprintf(DataToSend, "Wiadomosc nr %d\n\r", MessageCounter);
               CDC_Transmit_FS(DataToSend, MessageLength);
+
           }
+      }
+
+      //down pin K7
+      if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15) != GPIO_PIN_SET) {
+          HAL_Delay(100);
+          if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15) != GPIO_PIN_SET) {
+
+              MessageLength = (uint8_t) sprintf(DataToSend, "cms_dn");
+              CDC_Transmit_FS(DataToSend, MessageLength);
+
+              while (ReceivedDataFlag != 1){
+                  HAL_Delay(3);
+              }
+
+              //if (ReceivedDataFlag == 1) {
+                  ReceivedDataFlag = 0;
+                  // Wyczyszczenie tablicy nadawanych danych
+                  uint8_t iter;
+                  for (iter = 0; iter < 200; ++iter) {
+                      DataToSend[iter] = 0;
+                  }
+                  MessageLength = (uint8_t) sprintf(DataToSend, "DRecieved: %s", ReceivedData);
+                  CDC_Transmit_FS(DataToSend, MessageLength);
+              HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
+             // }
+//              HAL_Delay(20);
+          }
+      }
+
+
+      //down pin K6
+      if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) != GPIO_PIN_SET) {
+          HAL_Delay(100);
+          if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) != GPIO_PIN_SET) {
+
+              MessageLength = (uint8_t) sprintf(DataToSend, "cch_dn");
+              CDC_Transmit_FS(DataToSend, MessageLength);
+
+              while (ReceivedDataFlag != 1){
+                  HAL_Delay(3);
+              }
+
+              //if (ReceivedDataFlag == 1) {
+              ReceivedDataFlag = 0;
+              // Wyczyszczenie tablicy nadawanych danych
+              uint8_t iter;
+              for (iter = 0; iter < 200; ++iter) {
+                  DataToSend[iter] = 0;
+              }
+              MessageLength = (uint8_t) sprintf(DataToSend, "DRecieved: %s", ReceivedData);
+              CDC_Transmit_FS(DataToSend, MessageLength);
+              HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
+              // }
+//              HAL_Delay(20);
+
+          }
+      }
+
+
+      //up pin K3
+      if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) != GPIO_PIN_SET) {
+
+          HAL_Delay(100);
+          if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) != GPIO_PIN_SET) {
+
+              MessageLength = (uint8_t) sprintf(DataToSend, "cms_up");
+              CDC_Transmit_FS(DataToSend, MessageLength);
+
+                  while (ReceivedDataFlag != 1){
+                      HAL_Delay(3);
+                  }
+//                  if (ReceivedDataFlag == 1) {
+                  ReceivedDataFlag = 0;
+
+                  // Wyczyszczenie tablicy nadawanych danych
+                  uint8_t iter;
+                  for (iter = 0; iter < 200; ++iter) {
+                      DataToSend[iter] = 0;
+                  }
+
+                  MessageLength = (uint8_t) sprintf(DataToSend, "URecieved: %s", ReceivedData);
+                  CDC_Transmit_FS(DataToSend, MessageLength);
+//              HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
+              HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
+//                  }
+
+
+//              HAL_Delay(20);
+          }
+
+      }
+
+      //up pin K2
+      if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) != GPIO_PIN_SET) {
+
+          HAL_Delay(100);
+          if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) != GPIO_PIN_SET) {
+
+              MessageLength = (uint8_t) sprintf(DataToSend, "cch_up");
+              CDC_Transmit_FS(DataToSend, MessageLength);
+
+              while (ReceivedDataFlag != 1){
+                  HAL_Delay(3);
+              }
+//                  if (ReceivedDataFlag == 1) {
+              ReceivedDataFlag = 0;
+
+              // Wyczyszczenie tablicy nadawanych danych
+              uint8_t iter;
+              for (iter = 0; iter < 200; ++iter) {
+                  DataToSend[iter] = 0;
+              }
+
+              MessageLength = (uint8_t) sprintf(DataToSend, "URecieved: %s", ReceivedData);
+              CDC_Transmit_FS(DataToSend, MessageLength);
+//              HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
+              HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
+//                  }
+
+
+//              HAL_Delay(20);
+          }
+
       }
 
       if (ReceivedDataFlag == 1) {
 
           ReceivedDataFlag = 0;
-            HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
+
+
 
           // Wyczyszczenie tablicy nadawanych danych
           uint8_t iter;
-          for (iter = 0; iter < ARRAY_SIZE; ++iter) {
+          for (iter = 0; iter < 200; ++iter) {
               DataToSend[iter] = 0;
           }
 
-          MessageLength = sprintf(DataToSend, "Odebrano: %s\n\r", ReceivedData);
+          MessageLength = (uint8_t) sprintf(DataToSend, "Odebrano: %s\n\r", ReceivedData);
+
+
+
           CDC_Transmit_FS(DataToSend, MessageLength);
       }
       asm("nop");
@@ -219,6 +352,7 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
@@ -230,6 +364,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : PB12 PB13 PB14 PB15 */
+  GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
   /*Configure GPIO pins : PD12 PD13 PD14 PD15 */
   GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -240,6 +380,9 @@ static void MX_GPIO_Init(void)
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 }
 
