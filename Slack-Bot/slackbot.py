@@ -11,7 +11,7 @@ from slacker import Slacker
 MSG_NUM = 16
 
 
-slack = Slacker('xoxb-536663832229-571336411969-JwKvJ76easEvRAoWVPM7IyGc')
+slack = Slacker('')
 
 
 channels_list = ChannelsList()
@@ -86,7 +86,7 @@ while True:
         out += str(ser.read(1).decode('ascii'))
     if out != '':
         print(f"Recieved: {out}")
-        time.sleep(0.01)
+        time.sleep(0.02)
 
     if out.startswith('cms_up'):
         out = ''
@@ -97,7 +97,7 @@ while True:
         print(f"Sent data: {data}")
         ser.write(data.encode('ascii'))
 
-        time.sleep(0.01)
+        time.sleep(0.02)
     elif out.startswith('cms_dn'):
         out = ''
         if msg_index<max_msg_index:
@@ -107,7 +107,7 @@ while True:
         print(f"Sent data: {data}")
         ser.write(data.encode('ascii'))
 
-        time.sleep(0.01)
+        time.sleep(0.02)
     elif out.startswith('cch_up'):
         out = ''
         if ch_index>0:
@@ -127,7 +127,7 @@ while True:
         print(f"Sent data: {data}")
         ser.write(data.encode('ascii'))
 
-        time.sleep(0.01)
+        time.sleep(0.02)
 
     elif out.startswith('cch_dn'):
         out = ''
@@ -147,7 +147,7 @@ while True:
         print(f"Sent data: {data}")
         ser.write(data.encode('ascii'))
 
-        time.sleep(0.01)
+        time.sleep(0.02)
     else:
         out = ''
 

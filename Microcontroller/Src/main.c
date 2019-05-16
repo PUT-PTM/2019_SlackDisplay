@@ -82,6 +82,9 @@ uint8_t MessageLength = 0; // Zawiera dlugosc wysylanej wiadomosci
 
 uint8_t ReceivedData[200]; // Tablica przechowujaca odebrane dane
 uint8_t ReceivedDataFlag = 0; // Flaga informujaca o odebraniu danych
+
+uint8_t ReceivedText[180];
+uint8_t ReceivedUser[50];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -167,7 +170,39 @@ int main(void)
                   for (iter = 0; iter < 200; ++iter) {
                       DataToSend[iter] = 0;
                   }
-                  MessageLength = (uint8_t) sprintf(DataToSend, "DRecieved: %s", ReceivedData);
+
+                  for (iter = 0; iter < 50; ++iter) {
+                  ReceivedUser[iter] = 0;
+                 }
+              for (iter = 0; iter < 180; ++iter) {
+                  ReceivedText[iter] = 0;
+              }
+
+
+              int index = 0;
+
+              //-----------------------------------------------------------------------------------
+              while(ReceivedData[index]!='?'){
+                  index++;
+              }
+              index++;
+              int user_index = 0;
+              while(ReceivedData[index]!='?'){
+                  ReceivedUser[user_index]=ReceivedData[index];
+                  user_index++;
+                  index++;
+              }
+              index++;
+              int text_index = 0;
+
+              while(index<200){
+                  ReceivedText[text_index]=ReceivedData[index];
+                  text_index++;
+                  index++;
+              }
+
+
+                  MessageLength = (uint8_t) sprintf(DataToSend, "DRecieved: %s", ReceivedText);
                   CDC_Transmit_FS(DataToSend, MessageLength);
               HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
              // }
@@ -195,7 +230,39 @@ int main(void)
               for (iter = 0; iter < 200; ++iter) {
                   DataToSend[iter] = 0;
               }
-              MessageLength = (uint8_t) sprintf(DataToSend, "DRecieved: %s", ReceivedData);
+
+              for (iter = 0; iter < 50; ++iter) {
+                  ReceivedUser[iter] = 0;
+              }
+              for (iter = 0; iter < 180; ++iter) {
+                  ReceivedText[iter] = 0;
+              }
+
+              int index = 0;
+
+              //-----------------------------------------------------------------------------------
+              while(ReceivedData[index]!='?'){
+                  index++;
+              }
+              index++;
+              int user_index = 0;
+              while(ReceivedData[index]!='?'){
+                  ReceivedUser[user_index]=ReceivedData[index];
+                  user_index++;
+                  index++;
+              }
+              index++;
+              int text_index = 0;
+
+              while(index<200){
+                  ReceivedText[text_index]=ReceivedData[index];
+                  text_index++;
+                  index++;
+              }
+
+
+
+              MessageLength = (uint8_t) sprintf(DataToSend, "DRecieved: %s", ReceivedText);
               CDC_Transmit_FS(DataToSend, MessageLength);
               HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
               // }
@@ -226,7 +293,37 @@ int main(void)
                       DataToSend[iter] = 0;
                   }
 
-                  MessageLength = (uint8_t) sprintf(DataToSend, "URecieved: %s", ReceivedData);
+
+              for (iter = 0; iter < 50; ++iter) {
+                  ReceivedUser[iter] = 0;
+              }
+              for (iter = 0; iter < 180; ++iter) {
+                  ReceivedText[iter] = 0;
+              }
+
+              int index = 0;
+
+                  //-----------------------------------------------------------------------------------
+                  while(ReceivedData[index]!='?'){
+                      index++;
+                  }
+                  index++;
+                  int user_index = 0;
+                  while(ReceivedData[index]!='?'){
+                      ReceivedUser[user_index]=ReceivedData[index];
+                      user_index++;
+                      index++;
+                  }
+                  index++;
+                    int text_index = 0;
+
+              while(index<200){
+                  ReceivedText[text_index]=ReceivedData[index];
+                  text_index++;
+                  index++;
+              }
+
+                  MessageLength = (uint8_t) sprintf(DataToSend, "URecieved: %s", ReceivedText);
                   CDC_Transmit_FS(DataToSend, MessageLength);
 //              HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
               HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
@@ -259,7 +356,38 @@ int main(void)
                   DataToSend[iter] = 0;
               }
 
-              MessageLength = (uint8_t) sprintf(DataToSend, "URecieved: %s", ReceivedData);
+
+              for (iter = 0; iter < 50; ++iter) {
+                  ReceivedUser[iter] = 0;
+              }
+              for (iter = 0; iter < 180; ++iter) {
+                  ReceivedText[iter] = 0;
+              }
+
+              int index = 0;
+
+              //-----------------------------------------------------------------------------------
+              while(ReceivedData[index]!='?'){
+                  index++;
+              }
+              index++;
+              int user_index = 0;
+              while(ReceivedData[index]!='?'){
+                  ReceivedUser[user_index]=ReceivedData[index];
+                  user_index++;
+                  index++;
+              }
+              index++;
+              int text_index = 0;
+
+              while(index<200){
+                  ReceivedText[text_index]=ReceivedData[index];
+                  text_index++;
+                  index++;
+              }
+
+
+              MessageLength = (uint8_t) sprintf(DataToSend, "URecieved: %s", ReceivedText);
               CDC_Transmit_FS(DataToSend, MessageLength);
 //              HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
               HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
@@ -283,7 +411,35 @@ int main(void)
               DataToSend[iter] = 0;
           }
 
-          MessageLength = (uint8_t) sprintf(DataToSend, "Odebrano: %s\n\r", ReceivedData);
+         for (iter = 0; iter < 50; ++iter) {
+                  ReceivedUser[iter] = 0;
+                 }
+              for (iter = 0; iter < 180; ++iter) {
+                  ReceivedText[iter] = 0;
+              }
+          int index = 0;
+
+          //-----------------------------------------------------------------------------------
+          while(ReceivedData[index]!='?'){
+              index++;
+          }
+          ++index;
+          int user_index = 0;
+          while(ReceivedData[index]!='?'){
+              ReceivedUser[user_index]=ReceivedData[index];
+              ++user_index;
+              ++index;
+          }
+          index++;
+          int text_index = 0;
+
+          while(index<200){
+              ReceivedText[text_index]=ReceivedData[index];
+              text_index++;
+              index++;
+          }
+
+          MessageLength = (uint8_t) sprintf(DataToSend, "Odebrano: %s", ReceivedText);
 
 
 

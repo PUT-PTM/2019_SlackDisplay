@@ -290,28 +290,25 @@ static int8_t CDC_Control_FS(uint8_t cmd, uint8_t* pbuf, uint16_t length)
   */
 static int8_t CDC_Receive_FS(uint8_t* Buf, uint32_t *Len)
 {
-    USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
-    USBD_CDC_ReceivePacket(&hUsbDeviceFS);
-    //Zmienne zadeklarowane w pliku main.c
-    //extern const int ARRAY_SIZE;
-    const int EXTERN_ARRAY_SIZE = 200;
-    extern uint8_t ReceivedData[200]; // Tablica przechowujaca odebrane dane
-    extern uint8_t ReceivedDataFlag; // Flaga informujaca o odebraniu danych
+  /* USER CODE BEGIN 6 */
+  USBD_CDC_SetRxBuffer(&hUsbDeviceFS, &Buf[0]);
+  USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+  //Zmienne zadeklarowane w pliku main.c
+  //extern const int ARRAY_SIZE;
+  const int EXTERN_ARRAY_SIZE = 200;
+  extern uint8_t ReceivedData[200]; // Tablica przechowujaca odebrane dane
+  extern uint8_t ReceivedDataFlag; // Flaga informujaca o odebraniu danych
 
 
-    // Wyczyszczenie tablicy odebranych danych
-    uint8_t iter;
-    for(iter = 0; iter<200; ++iter){
-        ReceivedData[iter] = 0;
-    }
+  // Wyczyszczenie tablicy odebranych danych
+  uint8_t iter;
+  for(iter = 0; iter<200; ++iter){
+    ReceivedData[iter] = 0;
+  }
 
-    strlcpy(ReceivedData, Buf, (*Len) + 1); // Przekopiowanie danych do naszej tablicy
-    ReceivedDataFlag = 1; // Ustawienie flagi odebrania danych
-
-
-
-    return (USBD_OK);
-
+  strlcpy(ReceivedData, Buf, (*Len) + 1); // Przekopiowanie danych do naszej tablicy
+  ReceivedDataFlag = 1; // Ustawienie flagi odebrania danych
+  return (USBD_OK);
   /* USER CODE END 6 */
 }
 
