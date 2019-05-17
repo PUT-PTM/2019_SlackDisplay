@@ -55,6 +55,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "usbd_cdc_if.h"
+#include "displayer.h"
+#include "i2c-lcd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -73,6 +75,9 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+I2C_HandleTypeDef hi2c1;
+
+TIM_HandleTypeDef htim1;
 
 /* USER CODE BEGIN PV */
 
@@ -90,6 +95,8 @@ uint8_t ReceivedUser[50];
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_I2C1_Init(void);
+static void MX_TIM1_Init(void);
 /* USER CODE BEGIN PFP */
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
@@ -134,7 +141,17 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USB_DEVICE_Init();
+  MX_I2C1_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
+
+    lcd_init();
+    lcd_clear();
+    lcd_send_string("qwerty");
+
+    //lcd_send_string("KOT");
+//    menu(MessageCounter);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -201,10 +218,17 @@ int main(void)
                   index++;
               }
 
+              //display
+              lcd_clear();
+              lcd_send_cmd(0x80);
+              lcd_send_string("some user");
+              lcd_send_cmd(0xc0);
+              lcd_send_string(ReceivedText);
 
-                  MessageLength = (uint8_t) sprintf(DataToSend, "DRecieved: %s", ReceivedText);
-                  CDC_Transmit_FS(DataToSend, MessageLength);
-              HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
+
+//                  MessageLength = (uint8_t) sprintf(DataToSend, "DRecieved: %s", ReceivedUser);
+//                  CDC_Transmit_FS(DataToSend, MessageLength);
+//              HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
              // }
 //              HAL_Delay(20);
           }
@@ -260,10 +284,15 @@ int main(void)
                   index++;
               }
 
+//display
+                lcd_clear();
+              lcd_send_cmd(0x80);
+              lcd_send_string(ReceivedUser);
+              lcd_send_cmd(0xc0);
+              lcd_send_string(ReceivedText);
 
-
-              MessageLength = (uint8_t) sprintf(DataToSend, "DRecieved: %s", ReceivedText);
-              CDC_Transmit_FS(DataToSend, MessageLength);
+//              MessageLength = (uint8_t) sprintf(DataToSend, "DRecieved: %s", ReceivedText);
+//              CDC_Transmit_FS(DataToSend, MessageLength);
               HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
               // }
 //              HAL_Delay(20);
@@ -323,8 +352,15 @@ int main(void)
                   index++;
               }
 
-                  MessageLength = (uint8_t) sprintf(DataToSend, "URecieved: %s", ReceivedText);
-                  CDC_Transmit_FS(DataToSend, MessageLength);
+
+              //display
+              lcd_clear();
+              lcd_send_cmd(0x80);
+              lcd_send_string(ReceivedUser);
+              lcd_send_cmd(0xc0);
+              lcd_send_string(ReceivedText);
+//                  MessageLength = (uint8_t) sprintf(DataToSend, "URecieved: %s", ReceivedText);
+//                  CDC_Transmit_FS(DataToSend, MessageLength);
 //              HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
               HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_13);
 //                  }
@@ -386,9 +422,14 @@ int main(void)
                   index++;
               }
 
-
-              MessageLength = (uint8_t) sprintf(DataToSend, "URecieved: %s", ReceivedText);
-              CDC_Transmit_FS(DataToSend, MessageLength);
+//display
+              lcd_clear();
+              lcd_send_cmd(0x80);
+              lcd_send_string(ReceivedUser);
+              lcd_send_cmd(0xc0);
+              lcd_send_string(ReceivedText);
+//              MessageLength = (uint8_t) sprintf(DataToSend, "URecieved: %s", ReceivedText);
+//              CDC_Transmit_FS(DataToSend, MessageLength);
 //              HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
               HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
 //                  }
@@ -439,7 +480,14 @@ int main(void)
               index++;
           }
 
-          MessageLength = (uint8_t) sprintf(DataToSend, "Odebrano: %s", ReceivedText);
+          //display
+          lcd_clear();
+          lcd_send_cmd(0x80);
+          lcd_send_string(ReceivedUser);
+          lcd_send_cmd(0xc0);
+          lcd_send_string(ReceivedText);
+
+//          MessageLength = (uint8_t) sprintf(DataToSend, "Odebrano: %s", ReceivedText);
 
 
 
@@ -497,6 +545,89 @@ void SystemClock_Config(void)
 }
 
 /**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.ClockSpeed = 100000;
+  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief TIM1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM1_Init(void)
+{
+
+  /* USER CODE BEGIN TIM1_Init 0 */
+
+  /* USER CODE END TIM1_Init 0 */
+
+  TIM_Encoder_InitTypeDef sConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM1_Init 1 */
+
+  /* USER CODE END TIM1_Init 1 */
+  htim1.Instance = TIM1;
+  htim1.Init.Prescaler = 0;
+  htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim1.Init.Period = 400;
+  htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim1.Init.RepetitionCounter = 0;
+  sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
+  sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
+  sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
+  sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
+  sConfig.IC1Filter = 15;
+  sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;
+  sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
+  sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
+  sConfig.IC2Filter = 15;
+  if (HAL_TIM_Encoder_Init(&htim1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM1_Init 2 */
+
+  /* USER CODE END TIM1_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -508,6 +639,7 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
