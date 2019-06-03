@@ -9,6 +9,8 @@ One of them is Slack-Bot that is a server side of an app. Slack-Bot is written i
 
 The other one is microcontroller written in C. Microcontroller gets messages from Slack-Bot and shows them on LCD 16x2 display connected via I2C bus. There is implemented navigation with four buttons: up, down, ok, main menu.
 
+![61930626_2346513172289692_3868206769805197312_n](https://user-images.githubusercontent.com/34038750/58832754-ef7d1080-864f-11e9-9ed0-93c2de0e7a2c.jpg)
+
 ## Tools  
 1. STM32CubeMX v4.27.0 
 2. System Workbench for STM32 (Neon.3 Release v4.6.3) 
@@ -70,4 +72,4 @@ MIT
 The project was conducted during the Microprocessor Lab course held by the Institute of Control and Information Engineering, Poznan University of Technology. 
 Supervisor: Tomasz Mańkowski 
 
-![61930626_2346513172289692_3868206769805197312_n](https://user-images.githubusercontent.com/34038750/58832754-ef7d1080-864f-11e9-9ed0-93c2de0e7a2c.jpg)
+
