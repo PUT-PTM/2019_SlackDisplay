@@ -12,6 +12,3 @@ class MessegesList:
         for e in self.messages:
             print(e)
 
-    def check(self):
-        """Checks if message already exists"""
-        pass

@@ -12,7 +12,6 @@ class Channel:
         return f"Channel name: {self.name}\t Channel id: {self.chan_id}"
 
     def print(self):
-        #return f"Channel name: {self.name}\t Channel id: {self.id}\n{self.msgs}"
 
         print(f"Channel name: {self.name}\tChannel id: {self.chan_id}\tNew messages: {self.new}")
         self.msgs.print()

@@ -39,11 +39,6 @@ slack.send_message('CGTPA9HCK', "lorem ipsum")
 slack.send_message('CGTPA9HCK', "dolor")
 slack.send_message('CGTPA9HCK', "sit amet")
 
-# slack.update_channels(channels_list)
-#
-# channels_list.print_all()
-
-# channels_list.print_name('general')
 
 stopFlag = threading.Event()
 thread = ThreadTimer(stopFlag, channels_list)
@@ -51,15 +46,7 @@ thread.start()
 
 
 
-# TODO: spradzanie czy dana wiadomość już jest
-# TODO: protokół
-# ser = serial.Serial(
-#     port='COM7',
-#     baudrate=9600,
-#     parity=serial.PARITY_ODD,
-#     stopbits=serial.STOPBITS_ONE,
-#     bytesize=serial.EIGHTBITS
-# )
+
 
 
 ################################################################################
@@ -68,24 +55,7 @@ ser = serial.Serial('COM7')
 
 ser.isOpen()
 out = ''
-# for e in channels_list.get('general').msgs.messages:
-#     #print(e.text)
-#     #time = datetime.datetime.fromtimestamp(float(e["ts"]))
-#     data = e.text
-#     #print(f"{data}, {time}")
-#     print(f"{data}")
-#     ser.write(data.encode('ascii'))
-#
-#
-#     #time.sleep(1)
-#     out = ''
-#     # let's wait one second before reading output (let's give device time to answer)
-#     time.sleep(0.003)
-#     while ser.inWaiting() > 0:
-#         out += str(ser.read(1).decode('ascii'))
-#
-#     if out != '':
-#         print(">>" + out)
+
 max_msg_index = len(channels_list.get('general').msgs.messages)-1
 msg_index = max_msg_index
 
@@ -102,7 +72,6 @@ if out != '':
     print("sinit>>" + out)
 out = ''
 
-# also some nice function
 while True:
     while ser.inWaiting() > 0:
         out += str(ser.read(1).decode('ascii'))
@@ -121,7 +90,6 @@ while True:
                f"{text.replace('~', '``')}"
         data = unicodedata.normalize('NFKD', data).encode('ASCII', 'ignore')
 
-        # data.replace('~', '^^')
 
         print(f"Sent data: {data}")
         ser.write(data)
@@ -154,12 +122,9 @@ while True:
         max_msg_index = len(channels_list.get_id(ch_index).msgs.messages) - 1
         msg_index = max_msg_index
 
-        # slack.update_channels(channels_list)
-        # max_ch_index = len(channels_list.channels) - 1
 
         print(f"Changed channel to: {channels_list.get_id(ch_index).name}")
 
-        # some nice function for that
         data = f"sch_get~{channels_list.get_id(ch_index).name}~{channels_list.get_id(ch_index).new}"
         data = unicodedata.normalize('NFKD', data).encode('ASCII', 'ignore')
         print(f"Sent data: {data}")
@@ -173,9 +138,6 @@ while True:
             ch_index = ch_index + 1
         else:
             ch_index = 0
-
-        # slack.update_channels(channels_list)
-        # max_ch_index = len(channels_list.channels) - 1
 
         max_msg_index = len(channels_list.get_id(ch_index).msgs.messages) - 1
         msg_index = max_msg_index
@@ -195,7 +157,6 @@ while True:
         max_ch_index = len(channels_list.channels) - 1
 
         print(f"Changed channel to: {channels_list.get_id(ch_index).name}")
-        # some nice function for that
         data = f"sch_get~{channels_list.get_id(ch_index).name}~{channels_list.get_id(ch_index).new}"
         data = unicodedata.normalize('NFKD', data).encode('ASCII', 'ignore')
         print(f"Sent data: {data}")

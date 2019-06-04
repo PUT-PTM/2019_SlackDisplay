@@ -10,9 +10,7 @@ class Slacker:
 
     def __get_channel_list(self):
         """Gets JSON with channels"""
-        # channels_json = self.sc.api_call(
-        #     "channels.list"
-        # )
+
 
         channels_json = self.sc.api_call(
             "conversations.list",
@@ -46,15 +44,6 @@ class Slacker:
 
             e.msgs.messages.reverse()
 
-            # tmp = MessegesList()
-            #
-            # for data in history["messages"]:
-            #     tmp.add(data["text"], data["user"], data["ts"])
-            #
-            # tmp.messages.reverse()
-            # tmp.print()
-            #
-            # e.msgs = tmp
 
     def __get_users_list(self):
         users = self.sc.api_call(
@@ -107,7 +96,6 @@ class Slacker:
                 e.new += count
             elif len(e.msgs.messages) == 0:
                 history = self.__get_channel_history(e.chan_id)
-                # print(json.dumps(history, sort_keys=True, indent=4))
                 for data in history["messages"]:
                     e.msgs.add(data["text"], data["user"], data["ts"])
 

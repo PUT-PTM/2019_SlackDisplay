@@ -64,5 +64,4 @@ class ChannelsList:
                 SENT = 0
 
         return NEW_DATA_FLAG, SENT
-        # print(f"No new changed flag to: {NEW_DATA_FLAG}, {SENT}")
 
