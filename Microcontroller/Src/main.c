@@ -117,7 +117,6 @@ int position = 5;
 volatile int audio = 0;
 uint16_t value;
 
-//volatile int timer = 0;
 volatile int speaker = 0;
 
 extern const uint8_t click[19592];
@@ -146,17 +145,10 @@ static void MX_ADC1_Init(void);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
     if(htim->Instance == TIM4) {
 
-//        tim_count++;
         if (NewMessageFlag == 1){
-//            tim_count = 0;
             HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
         }
-//    tim_count++;
     HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
-//    HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_15);
-//    HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET);
-//    HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
-//    HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET);
 
 
         if (state == 3 && strlen(ReceivedText) > 16){
@@ -187,13 +179,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
     }
     if (htim->Instance == TIM3) {
-//        HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
 timer++;
         if (clicker == 1) {
             if (speaker < 19592) {
 
                 if (timer % 2 == 0) {
-                    audio = click[speaker += 2]; // * value / 500;
+                    audio = click[speaker += 2];
                 }
 
 
@@ -261,8 +252,6 @@ int main(void)
     HAL_TIM_Base_Start_IT(&htim4);
     HAL_TIM_Base_Start_IT(&htim3);
     HAL_DAC_Start(&hdac, DAC_CHANNEL_1);
-    //lcd_send_string("KOT");
-//    menu(MessageCounter);
 
   /* USER CODE END 2 */
 
@@ -270,15 +259,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-//      if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET) {
-//          HAL_Delay(100);
-//          if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET) {
-//              ++MessageCounter;
-//              MessageLength = (uint8_t) sprintf(DataToSend, "Wiadomosc nr %d\n\r", MessageCounter);
-//              CDC_Transmit_FS(DataToSend, MessageLength);
 //
-//          }
-//      }
 
     //down pin K7
       if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15) != GPIO_PIN_SET) {
@@ -296,7 +277,6 @@ int main(void)
                   speaker = 0;
                   clicker = 1;
                   ReceivedDataFlag = 0;
-                  // Wyczyszczenie tablicy nadawanych danych
                   uint8_t iter;
                   for (iter = 0; iter < 200; ++iter) {
                       DataToSend[iter] = 0;
@@ -356,9 +336,7 @@ int main(void)
                   speaker = 0;
                   clicker = 1;
 
-                  //if (ReceivedDataFlag == 1) {
                   ReceivedDataFlag = 0;
-                  // Wyczyszczenie tablicy nadawanych danych
                   uint8_t iter;
                   for (iter = 0; iter < 200; ++iter) {
                       DataToSend[iter] = 0;
@@ -429,7 +407,6 @@ int main(void)
                   clicker = 1;
 
                   ReceivedDataFlag = 0;
-                  // Wyczyszczenie tablicy nadawanych danych
                   uint8_t iter;
                   for (iter = 0; iter < 200; ++iter) {
                       DataToSend[iter] = 0;
@@ -485,9 +462,7 @@ int main(void)
                   }
                   speaker = 0;
                   clicker = 1;
-                  //if (ReceivedDataFlag == 1) {
                   ReceivedDataFlag = 0;
-                  // Wyczyszczenie tablicy nadawanych danych
                   uint8_t iter;
                   for (iter = 0; iter < 200; ++iter) {
                       DataToSend[iter] = 0;
@@ -552,9 +527,7 @@ int main(void)
                   }
                   speaker = 0;
                   clicker = 1;
-                  //if (ReceivedDataFlag == 1) {
                   ReceivedDataFlag = 0;
-                  // Wyczyszczenie tablicy nadawanych danych
                   uint8_t iter;
                   for (iter = 0; iter < 200; ++iter) {
                       DataToSend[iter] = 0;
@@ -612,7 +585,6 @@ int main(void)
                   speaker = 0;
                   clicker = 1;
                   ReceivedDataFlag = 0;
-                  // Wyczyszczenie tablicy nadawanych danych
                   uint8_t iter;
                   for (iter = 0; iter < 200; ++iter) {
                       DataToSend[iter] = 0;
@@ -684,27 +656,12 @@ int main(void)
 
           if (ReceivedData[0] == 'n' && ReceivedData[1]=='e' && ReceivedData[2]=='w'){
               NewMessageFlag = 1;
-//              HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
           }
           if (ReceivedData[0] == 'o' && ReceivedData[1]=='l' && ReceivedData[2]=='d'){
               NewMessageFlag = 0;
               HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);
-//              HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
           }
 
-
-//          if (strcmp(ReceivedData, "new")){
-//                NewMessageFlag = 1;
-//                HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_12);
-//          }
-//
-//          if (strcmp(ReceivedData, "old")){
-//              NewMessageFlag = 0;
-//          }
-
-
-//          MessageLength = sprintf(DataToSend, "Odebrano: %s\n\r", ReceivedData);
-//          CDC_Transmit_FS(DataToSend, MessageLength);
       }
 
 
