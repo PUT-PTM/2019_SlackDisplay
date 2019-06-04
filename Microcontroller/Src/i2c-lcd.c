@@ -1,4 +1,3 @@
-
 /** Put this in the src folder **/
 
 #include "i2c-lcd.h"
@@ -43,6 +42,18 @@ void lcd_init (void)
 void lcd_send_string (char *str)
 {
 	while (*str) lcd_send_data (*str++);
+}
+
+void lcd_send_first_line(char *str){
+	lcd_send_cmd(0x80);
+	lcd_send_cmd(0x06);
+	lcd_send_cmd(0x06);
+	lcd_send_string(str);
+}
+
+void lcd_send_second_line(char *str){
+	lcd_send_cmd(0xc0);
+	lcd_send_string(str);
 }
 
 void lcd_send_integer(int number)

@@ -31,6 +31,38 @@ class ChannelsList:
 
         return None
 
+    def get_id(self, id):
+        return self.channels[id]
+
+
+
     def check(self, chan_id):
         """Checks if channel already exists"""
-        pass
+        other = False
+        size = len(self.channels)
+        for data in self.channels:
+
+            if data.chan_id != chan_id:
+                other = True
+            else:
+                other = False
+                break
+        return other
+
+    def check_new(self, NEW_DATA_FLAG, SENT):
+        iter = 0
+        for e in self.channels:
+            if e.new > 0 and SENT == 0:
+                NEW_DATA_FLAG = 1
+                return NEW_DATA_FLAG, SENT
+            if e.new > 0 and SENT == 1:
+                return NEW_DATA_FLAG, SENT
+            iter += 1
+        if iter == len(self.channels):
+            if NEW_DATA_FLAG == 1:
+                NEW_DATA_FLAG = 0
+                SENT = 0
+
+        return NEW_DATA_FLAG, SENT
+        # print(f"No new changed flag to: {NEW_DATA_FLAG}, {SENT}")
+

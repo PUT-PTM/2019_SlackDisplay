@@ -1,11 +1,9 @@
-
 #include "displayer.h"
 #include "usbd_cdc_if.h"
 void menu(int num_of_messe)
 {
-	while(1)
-	{
-	int position=1;
+
+	int position=5;
 	switch(position){
 	case 0:
 		lcd_clear();
@@ -14,7 +12,7 @@ void menu(int num_of_messe)
 		lcd_send_cmd(0xc0);
 		lcd_send_string("NEW MESSEGES- ");
 		lcd_send_integer(num_of_messe);
-		HAL_Delay(1000);
+		HAL_Delay(100);
 		break;
 	case 1:
 		lcd_clear();
@@ -23,7 +21,7 @@ void menu(int num_of_messe)
 		lcd_send_cmd(0xc0);
 		lcd_send_string("NEW MESSEGES- ");
 		lcd_send_integer(num_of_messe);
-		HAL_Delay(1000);
+		HAL_Delay(100);
 
 		break;
 	case 2:
@@ -33,7 +31,7 @@ void menu(int num_of_messe)
 		lcd_send_cmd(0xc0);
 		lcd_send_string("CHECK CHANNELS");
 		lcd_send_integer(num_of_messe);
-		HAL_Delay(1000);
+		HAL_Delay(100);
 		break;
 	case 3:
 		lcd_clear();
@@ -42,7 +40,7 @@ void menu(int num_of_messe)
 		lcd_send_cmd(0xc0);
 		lcd_send_string("CHECK CHANNELS");
 		lcd_send_integer(num_of_messe);
-		HAL_Delay(1000);
+		HAL_Delay(100);
 		break;
 	case 4:
 		lcd_clear();
@@ -51,9 +49,16 @@ void menu(int num_of_messe)
 		lcd_send_cmd(0xc0);
 		lcd_send_string(">>CHECK CHANNELS");
 		lcd_send_integer(num_of_messe);
-		HAL_Delay(1000);
+		HAL_Delay(100);
 		break;
 
-	}
+
+        case 5:
+            lcd_clear();
+            lcd_send_first_line("MENU");
+            lcd_send_second_line(">>CHECK CHANNELS");
+            HAL_Delay(100);
+
+            break;
 	}
 }

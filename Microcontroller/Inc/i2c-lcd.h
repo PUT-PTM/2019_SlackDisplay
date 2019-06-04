@@ -11,3 +11,9 @@ void lcd_send_string (char *str);  // send string to the lcd
 void lcd_send_integer(int number);
 
 void lcd_clear();
+
+void lcd_send_first_line(char *str);
+
+void lcd_send_second_line(char *str);
+
+//#include "stm32f4xx.h"
